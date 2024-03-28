@@ -1,2 +1,2 @@
-##Basic payments application
+Basic payments application
 
