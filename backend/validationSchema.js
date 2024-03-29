@@ -13,10 +13,10 @@ const signInSchema = zod.object({
 })
 
 const updateInfoSchema = zod.object({
-    username:zod.string().optional(),
-    firstName:zod.string().optional(),
-    lastName:zod.string().optional(),
-    password:zod.string().optional()
+    username: zod.string().optional(),
+    firstName: zod.string().optional(),
+    lastName: zod.string().optional(),
+    password: zod.string().optional()
 })
 
 module.exports = {
