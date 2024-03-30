@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const {userModel} = require('../db/Models');
 const zod = require('zod');
 const auth  = require('../middleware/auth')
-const {createNewUser,findUser,generateToken,generateHash,updateUser} = require('./config')
+const {createNewUser,generateToken,generateHash,updateUser,addContact} = require('./config')
 const {signInSchema,signUpSchema,validateBody} = require('../validationSchema')
 
 
@@ -38,8 +38,7 @@ userRouter.post('/signUp',async (req,res)=>{
         password:body.password
     };
     const token = await generateToken(forToken)
-    // const jwtSecret = process.env.SECRET
-    // const token = jwt.sign(forToken,jwtSecret);
+
     res.json({
         "message":"Account created successfully",
         "token":`${token}`
@@ -53,20 +52,19 @@ userRouter.post('/signUp',async (req,res)=>{
 userRouter.post('/signIn',async(req,res)=>{
     const body = req.body;
     const {success} = signInSchema.safeParse(body);
-    console.log(success)
     if(success){
-    const user = await findUser(body);
+    const user = await userModel.findOne({username:body.username});
+    console.log(user.password)
     const userPass = user.password
-    const forToken = {
-        userid:user._id,
-        username:user.username,
-        password:body.password
-    }
-
-    const token = await generateToken(forToken)
 
     
     if(await bcrypt.compare(body.password,userPass)){
+        const forToken = {
+            userid:user._id,
+            username:user.username,
+            password:body.password
+        }
+        const token = await generateToken(forToken)
         res.json({
             "Message":`Welcome ${user.username}`,
             "Token":`${token}`
@@ -112,7 +110,7 @@ userRouter.get('/getAll',auth,async (req,res)=>{
                 }
             }
         ]
-    })
+    }).select('-transactions -contacts')
     if(!foundUsers){
         res.json({
             "Message":"No users found"
@@ -121,5 +119,28 @@ userRouter.get('/getAll',auth,async (req,res)=>{
     else {
         res.json(foundUsers);
     }
+})
+
+userRouter.post('/addContact',auth,async(req,res)=>{
+    const {userid,username} = req.body;
+    const userId = req.userid;
+    try {
+        const addUser = await userModel.findOne({_id:userid});
+        const user = await  userModel.findOne({_id:userId});
+        const newContact = {
+            username: addUser.username,
+            firstName: addUser.firstName,
+            lastName: addUser.lastName
+        }
+
+        console.log(`user before adding is ${user}`);
+        await addContact(req.userid, newContact);
+        res.send("contact added")
+
+    }
+    catch(err){
+        console.log(`error while adding contact ${err}`);
+    }
+
 })
 module.exports = userRouter;

@@ -7,10 +7,18 @@ const pass = encodeURIComponent(p);
 
 mongoose.connect(`mongodb+srv://helloiamak9077:${pass}@cluster0.on4llwm.mongodb.net/simplypayDB`)
 
+
+const contacts = new mongoose.Schema({
+    username:String,
+    firstName:String,
+    lastName:String
+})
+
 const transactions = new mongoose.Schema({
     from:String,
     to:String,
     amount:Number,
+    note:String,
     TimeStamp:{type:Date,default:Date.now}
 })
 
@@ -18,9 +26,9 @@ const userSchema = new mongoose.Schema({
     username:String,
     firstName:String,
     lastName:String,
-    balance:Number,
     password:String,
-    transactions:[{transactions}]
+    transactions:[transactions],
+    contacts:[contacts]
 })
 
 const accountSchema = new mongoose.Schema({

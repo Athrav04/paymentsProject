@@ -19,7 +19,6 @@ const newUser = await new userModel({
     firstName:firstName,
     lastName:lastname,
     password:password,
-    balance:balance
 });
 const userid = newUser._id;
 console.log(`new userid is ${userid}`);
@@ -33,12 +32,7 @@ await account.save()
 return newUser
 }
 
-async function findUser(body){
-    const username = body.username;
-    const user = await userModel.findOne({username:username});
 
-    return user
-}
 
 async function updateUser(body,userid){
     const userId = userid;
@@ -61,10 +55,31 @@ async function generateHash(pass){
     const hashedPassword = bcrypt.hash(pass,saltRounds);
     return hashedPassword;
 }
+
+async function addTransaction(userId,transaction){
+    try {
+        await userModel.findOneAndUpdate({_id: userId}, {$push: {transactions: transaction}});
+    }
+    catch(err){
+        console.log(`error while updating transaction ${err}`);
+    }
+}
+
+async function addContact(userId,contact){
+    try{
+        console.log('adding contact ');
+        console.log(`userId is ${userId}`)
+        await userModel.findOneAndUpdate({_id:userId},{$push:{contacts:contact}}).select('-transactions');
+        console.log('contact added successfully');
+    }catch(err){
+        console.log(`Error occured ${err}`);
+    }
+}
 module.exports = {
     createNewUser,
-    findUser,
+    addTransaction,
     generateToken,
     generateHash,
-    updateUser
+    updateUser,
+    addContact
 }
