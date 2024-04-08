@@ -1,11 +1,26 @@
 
 import './App.css'
+import {Routes,Route} from 'react-router-dom'
+import HomePage from './components/HomePage'
+import SingIn from './components/singIn'
+import SignUp from './components/singUp'
+import Send from './components/send'
+import Dashboard from './components/dashboard'
+import ErrorPage from './components/ErrorPage'
+
 
 function App() {
 
   return (
     <>
-     <h1 className=' bg-black'>This is simple payments application</h1>
+    <Routes>
+      <Route path='/' element={<HomePage/>} />
+	    <Route path='/SignIn' element={<SingIn/>} />
+      <Route path='/SignUp' element={<SignUp/>} />
+      <Route path='/Send' element={<Send/>} />
+      <Route path='/Dashboard' element={<Dashboard/>} />
+      <Route path='*' element={<ErrorPage/>} />
+    </Routes>
     </>
   )
 }
