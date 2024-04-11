@@ -53,7 +53,6 @@ export default function Dashboard(props){
 				Authorization : `Bearer ${localStorage.getItem("token")}`
 			}
 		}).then((res)=>{
-			console.log(res.data);
 			setUsers(res.data);
 		})
 	},[filter])
@@ -77,7 +76,7 @@ export default function Dashboard(props){
 		</div>
 		<div className="w-full ml-7">
 
-			{Users.map((user)=><Contacts key={user._id} user={user}/>)}
+			{Users.map((user)=><Contacts key={user._id} user={user} onClick={()=>{navigate("/Send")}}/>)}
 		</div>
 		
 	</section>

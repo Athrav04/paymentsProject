@@ -21,6 +21,7 @@ async function authMiddleware(req,res,next) {
     }
     catch(err){
         console.log(`error occured ${err}`)
+        res.status(403)
     }
 }
 }

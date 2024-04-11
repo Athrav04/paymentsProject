@@ -1,4 +1,4 @@
-export default function Contacts({user}){
+export default function Contacts({user,onClick}){
     const alphabet = user.username.charAt(0).toUpperCase();
     const Username = user.username;
      return(
@@ -11,7 +11,7 @@ export default function Contacts({user}){
             </div>
             <div className="mr-8">
                 <div className=" w-40">
-                    <button className=" mt-2 flex-wrap w-full bg-slate-800 flex justify-center items-center text-md text-white rounded-md h-full py-2">
+                    <button className=" mt-2 flex-wrap w-full bg-slate-800 flex justify-center items-center text-md text-white rounded-md h-full py-2" onClick={onClick}>
                         Send Money
                     </button>
                 </div>
