@@ -14,7 +14,9 @@ userRouter.get('/',(req,res)=>{
 
 userRouter.post('/signUp',async (req,res)=>{
     const body = req.body;
-    const {success} = signUpSchema.safeParse(body); //data validation using zod
+    console.log(`got request body ${JSON.stringify(body)}`)
+    const {success} =  signUpSchema.safeParse(body); //data validation using zod
+    console.log(success);
     if(success){
 
     const hashedPass = await generateHash(body.password)
@@ -23,10 +25,10 @@ userRouter.post('/signUp',async (req,res)=>{
     const userExist = await userModel.find({
         username : body.username
     })
-    console.log(`user already exists ${userExist}`)
+    
     if(userExist.length != 0){
-        console.log(`user already exists ${userExist}`)
-        res.json({"Error":"user already exists"})
+        
+        res.status(409).json({"Error":"user already exists"})
     }
     else{
     const newUser = await createNewUser(body);
@@ -45,7 +47,7 @@ userRouter.post('/signUp',async (req,res)=>{
     })
     }
     }
-    else{es.json({"Error":"invalid input"})}
+    else{res.json({"Error":"invalid input"})}
 
 })
 
@@ -54,7 +56,7 @@ userRouter.post('/signIn',async(req,res)=>{
     const {success} = signInSchema.safeParse(body);
     if(success){
     const user = await userModel.findOne({username:body.username});
-    console.log(user.password)
+        console.log(user);
     const userPass = user.password
 
     
@@ -83,14 +85,7 @@ userRouter.post('/signIn',async(req,res)=>{
 
 userRouter.put('/updateInfo',auth, async (req,res)=>{
     const body = req.body;
-    // const {isTrue} = await updateInfoSchema.safeParse(req.body);
-    // console.log(`validation is ${isTrue}`);
-    // if(!isTrue){
-    //     res.json({"Message":"invalid input/credentials"});
-    // }
-    // else{
-    // res.json({"message":"Still working on this"});
-    // }
+
     const updatedUser = await updateUser(body,req.userid);
     console.log(`updated user is ${updatedUser}`)
     res.json({"Success":"User updated successfully",
@@ -142,5 +137,25 @@ userRouter.post('/addContact',auth,async(req,res)=>{
         console.log(`error while adding contact ${err}`);
     }
 
+})
+
+userRouter.get('/me',auth,async(req,res)=>{
+   try{
+    const currentUser = await userModel.findOne({_id:req.userid});
+    if(currentUser){
+    console.log(currentUser);
+    console.log(currentUser.username);
+    
+    res.send(
+       currentUser
+    )
+}
+else{
+    res.send("user does not exist")
+}
+   }
+   catch(err){
+    console.log(`internal server error ${err}`);
+   }
 })
 module.exports = userRouter;

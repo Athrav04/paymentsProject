@@ -12,12 +12,14 @@ async function createNewUser(userBody) {
     const username = userBody.username;
     const firstName = userBody.firstName;
     const lastname = userBody.firstName;
+    const email = userBody.email;
     const password = userBody.password;
     const balance = Math.floor(Math.random()*10000);
 const newUser = await new userModel({
     username:username,
     firstName:firstName,
     lastName:lastname,
+    email:email,
     password:password,
 });
 const userid = newUser._id;

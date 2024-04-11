@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
     username:String,
     firstName:String,
     lastName:String,
+    email:String,
     password:String,
     transactions:[transactions],
     contacts:[contacts]
