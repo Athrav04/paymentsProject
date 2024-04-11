@@ -42,8 +42,8 @@ userRouter.post('/signUp',async (req,res)=>{
     const token = await generateToken(forToken)
 
     res.json({
-        "message":"Account created successfully",
-        "token":`${token}`
+        message:"Account created successfully",
+        token:`${token}`
     })
     }
     }
@@ -68,8 +68,8 @@ userRouter.post('/signIn',async(req,res)=>{
         }
         const token = await generateToken(forToken)
         res.json({
-            "Message":`Welcome ${user.username}`,
-            "Token":`${token}`
+            Message:`Welcome ${user.username}`,
+            token:`${token}`
         })
     }
     else{
@@ -93,7 +93,8 @@ userRouter.put('/updateInfo',auth, async (req,res)=>{
 })
 
 userRouter.get('/getAll',auth,async (req,res)=>{
-    const filter = req.query.filter || 'empty';
+    try{
+        const filter = req.query.filter || '';
     const foundUsers = await userModel.find({
         $or:[
             {firstName:{
@@ -106,13 +107,19 @@ userRouter.get('/getAll',auth,async (req,res)=>{
             }
         ]
     }).select('-transactions -contacts')
-    if(!foundUsers){
+    console.log(foundUsers.length);
+    if(foundUsers.length == 0){
         res.json({
-            "Message":"No users found"
+            Message:"No users found"
         })
     }
     else {
-        res.json(foundUsers);
+        res.send(foundUsers);
+    }
+
+    }
+    catch(e){
+        console.log(`internal server error ${e}`);
     }
 })
 
@@ -143,8 +150,7 @@ userRouter.get('/me',auth,async(req,res)=>{
    try{
     const currentUser = await userModel.findOne({_id:req.userid});
     if(currentUser){
-    console.log(currentUser);
-    console.log(currentUser.username);
+    console.log(`me endpoint`);
     
     res.send(
        currentUser

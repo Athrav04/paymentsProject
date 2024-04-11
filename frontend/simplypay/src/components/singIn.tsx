@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import axios from "axios"
 
@@ -8,6 +8,7 @@ import Button from "./Button"
 
 
 export default function SingIn(){
+	const navigate = useNavigate();
 	const [loading,setLoading] = useState(false);
 	const [show,setShow] = useState(false);
 	const [username,setUsername] = useState("");
@@ -52,12 +53,23 @@ export default function SingIn(){
 			</form>
 			<Button onClick={async()=>{
 				setLoading(true);
-				const query = await axios.post("http://localhost:3000/api/v1/user/signIn",{
+				const response = await axios.post("http://localhost:3000/api/v1/user/signIn",{
 					username,
 					password
 				})
 				setLoading(false);
-				console.log(`Sign In query ${query}`);
+				console.log(response.data.token)
+				if(response.data.token){
+				localStorage.setItem("token",response.data.token);
+				console.log(localStorage.getItem("token"));
+				}
+				else{
+					console.log('error occured');
+				}
+				console.log(`Sign In response ${response}`);
+				if(response.status == 200){
+					navigate('/Dashboard');
+				}
 			}} text="Sign In" isDisabled={loading} />
 			<p className=" text-lg text-black">Don't have an Account? <Link to='/SignUp' className=" underline decoration-solid">Create Account</Link></p>
 		</div>

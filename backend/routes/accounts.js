@@ -18,7 +18,7 @@ accoutnRouter.get('/balance',auth,async(req,res)=>{
         else
         {
             const balance = user.balance;
-            res.json({"Balance":`${balance}`})
+            res.json({Balance:`${balance}`})
         }
     }
     catch(err){

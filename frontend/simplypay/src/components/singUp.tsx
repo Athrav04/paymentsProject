@@ -66,7 +66,7 @@ export default function SignUp(){
 				password
 			})
 				setLoading(true);
-				const query = await axios.post("http://localhost:3000/api/v1/user/signUp",{
+				const response = await axios.post("http://localhost:3000/api/v1/user/signUp",{
 					username,
 					firstName,
 					lastName,
@@ -74,9 +74,13 @@ export default function SignUp(){
 					password
 				})
 				setLoading(false);
-				console.log(JSON.stringify(query))
-				console.log(`Sign In query ${JSON.stringify(query.data)}`);
-				if(query.status == 200){
+				if(response.data.token){
+					localStorage.setItem("token",response.data.token);
+					console.log(response.data.token)
+				}
+				console.log(JSON.stringify(response))
+				console.log(`Sign In response ${JSON.stringify(response.data)}`);
+				if(response.status == 200){
 					navigate('/Dashboard')
 				}
 			}} text="Sign Up" isDisabled={loading}/>
