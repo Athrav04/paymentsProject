@@ -2,7 +2,7 @@ import UserCard from "./UserCard";
 import Contacts from "./Contacts";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useEffect , useState} from "react";
+import { useEffect , useRef, useState} from "react";
 
 
 export default function Dashboard(props){
@@ -46,15 +46,31 @@ export default function Dashboard(props){
 		 
 
 	},[])
-
-	useEffect(()=>{
-		axios.get("http://localhost:3000/api/v1/user/getAll?filter="+filter,{
+	let timeout = useRef();
+	function debounce(callBack,delay=1000){
+		 timeout;
+		return function (){
+			clearTimeout(timeout.current);
+			timeout.current = setTimeout(()=>{
+				callBack()
+			},delay);
+		}
+	}
+	const fetchUser = debounce( ()=>{
+		 axios.get("http://localhost:3000/api/v1/user/getAll?filter="+filter,{
 			headers : {
 				Authorization : `Bearer ${localStorage.getItem("token")}`
 			}
 		}).then((res)=>{
 			setUsers(res.data);
+			if(res.data.Users == 0){
+
+				setUsers([]);
+			}
 		})
+	},1000)
+	useEffect(()=>{
+		fetchUser();
 	},[filter])
 
 	return (
@@ -76,7 +92,12 @@ export default function Dashboard(props){
 		</div>
 		<div className="w-full ml-7">
 
-			{Users.map((user)=><Contacts key={user._id} user={user} onClick={()=>{navigate("/Send")}}/>)}
+			{Users.length != 0 ? (Users.map((user)=><Contacts key={user._id} user={user} onClick={()=>{navigate("/Send")}}/>)):(
+				<div className="flex justify-center items-center">
+					<p className="text-xl font-medium text-black">No Users found...</p>
+				</div>
+
+			)}
 		</div>
 		
 	</section>

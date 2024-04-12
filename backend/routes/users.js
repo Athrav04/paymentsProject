@@ -88,7 +88,7 @@ userRouter.put('/updateInfo',auth, async (req,res)=>{
 
     const updatedUser = await updateUser(body,req.userid);
     console.log(`updated user is ${updatedUser}`)
-    res.json({"Success":"User updated successfully",
+    res.json({Success:"User updated successfully",
     "Updated info":`${updatedUser}`})
 })
 
@@ -109,9 +109,7 @@ userRouter.get('/getAll',auth,async (req,res)=>{
     }).select('-transactions -contacts')
     console.log(foundUsers.length);
     if(foundUsers.length == 0){
-        res.json({
-            Message:"No users found"
-        })
+        res.json({Users:"0"});
     }
     else {
         res.send(foundUsers);
