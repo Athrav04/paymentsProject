@@ -1,11 +1,15 @@
+import { useSearchParams } from "react-router-dom";
+
+
 export default function Contacts({user,onClick}){
+
     const alphabet = user.username.charAt(0).toUpperCase();
     const Username = user.username;
      return(
         <div className="w-full flex justify-between ">
             <div className="flex justify-center gap-1">
             <div className="rounded-full bg-slate-300 h-14 w-14 flex justify-center mt-1 mr-2 ">
-					<p className="flex flex-col justify-center h-full text-lg">{alphabet}</p>
+					<p className="flex flex-col justify-center h-full text-lg m-0">{alphabet}</p>
 				</div>
                 <div className="mt-4">{Username}</div>
             </div>

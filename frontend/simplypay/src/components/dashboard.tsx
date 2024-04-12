@@ -20,7 +20,6 @@ export default function Dashboard(props){
 			}
 		 }
 		 ).then((response)=>{
-	
 			const user = response.data;
 			if(user.length == 0){
 				navigate('/SignIn');
@@ -42,10 +41,8 @@ export default function Dashboard(props){
 			console.log(err);
 			navigate("/SignUp");
 		 })
-
-		 
-
 	},[])
+
 	let timeout = useRef();
 	function debounce(callBack,delay=1000){
 		 timeout;
@@ -56,6 +53,7 @@ export default function Dashboard(props){
 			},delay);
 		}
 	}
+
 	const fetchUser = debounce( ()=>{
 		 axios.get("http://localhost:3000/api/v1/user/getAll?filter="+filter,{
 			headers : {
@@ -78,13 +76,13 @@ export default function Dashboard(props){
 		<nav className="flex justify-between w-full shadow-md px-7 py-7">
 			<p className="text-4xl font-bold text-black">Payments App</p>
 			<div className="flex ">
-				<p className="text-xl text-black font-medium h-full mt-3 mr-1">Hello, </p>
-				<div className="rounded-full bg-slate-500 h-12 w-12 flex justify-center mt-1 mr-2 ">
-					<p className="flex flex-col justify-center h-full text-lg">{alphabet}</p>
+				<p className="text-xl text-black font-medium h-full  mr-1">Hello, </p>
+				<div className="rounded-full bg-slate-500 h-12 w-12 flex justify-center mr-2 ">
+					<p className="flex flex-col justify-center h-full text-lg m-0">{alphabet}</p>
 				</div>
 			</div>
 		</nav>
-		<p className="ml-7 mt-2 text-2xl font-bold text-black w-full">Your Balance ,  Rs.{userBalance}</p>
+		<p className="ml-7 mt-2 text-2xl font-bold text-black w-full">Your Balance ,  ₹{userBalance}</p>
 		<div className="min-w-full"> 
 		<UserCard onChange={(e)=>{
 			setFilter(e.target.value);
@@ -92,7 +90,7 @@ export default function Dashboard(props){
 		</div>
 		<div className="w-full ml-7">
 
-			{Users.length != 0 ? (Users.map((user)=><Contacts key={user._id} user={user} onClick={()=>{navigate("/Send")}}/>)):(
+			{Users.length != 0 ? (Users.map((user)=><Contacts key={user._id} user={user} onClick={()=>{navigate(`/Send?name=${user.username}`)}}/>)):(
 				<div className="flex justify-center items-center">
 					<p className="text-xl font-medium text-black">No Users found...</p>
 				</div>

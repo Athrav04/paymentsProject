@@ -28,8 +28,8 @@ accoutnRouter.get('/balance',auth,async(req,res)=>{
 })
 
 accoutnRouter.post('/transfer',auth,async(req,res)=>{
-    const toSend = req.query.transferTo;
         try {
+            const toSend = req.query.transferTo;
             const session = await mongoose.startSession();
             session.startTransaction();
             if(!toSend){
@@ -38,11 +38,12 @@ accoutnRouter.post('/transfer',auth,async(req,res)=>{
                 })
             }
             const {amount, note} = req.body;
-            const fromUser = await userModel.findOne({_id: req.userid}).session(session);
-            console.log(`fromUser is ${JSON.stringify(fromUser)}`)
+            const fromUser = await userModel.findOne({_id: req.userid}).select('-transactions').session(session);
+
             const fromAccount = await accountModel.findOne({userid:req.userid}).session(session)
             const toUser = await userModel.findOne({username:toSend});
-            const toAccount = await accountModel.findOne({userid: toUser._id}).session(session);
+
+            const toAccount = await accountModel.findOne({userid:toUser._id}).select('-transactions').session(session);
             if (!fromUser || fromUser.balance < amount) {
                 session.abortTransaction();
                 res.json({"Error": "Insufficient balance"});
@@ -57,11 +58,13 @@ accoutnRouter.post('/transfer',auth,async(req,res)=>{
                const transaction = {
                    from:fromUser.username,
                    to:toUser.username,
+                   amount:amount,
                    note:note,
-                   TimeStamp:Date.now()
+                   TimeStamp:new Date()
                }
 
-               await addTransaction(req.userid,transaction);
+              const transact = await addTransaction(req.userid,transaction);
+              console.log(transact);
                await addTransaction(toUser._id,transaction);
                 await session.commitTransaction();
                 session.endSession();
@@ -71,10 +74,7 @@ accoutnRouter.post('/transfer',auth,async(req,res)=>{
 
                 res.json({
                     Message: "Transaction successful",
-                    updatedBalances: {
-                        sender: `${fromAccount.balance}`,
-                        reciever: `${toAccount.balance},`
-                    }
+                    Time: `${new Date()}`
                 })
             }
         }

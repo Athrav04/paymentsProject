@@ -60,7 +60,13 @@ async function generateHash(pass){
 
 async function addTransaction(userId,transaction){
     try {
-        await userModel.findOneAndUpdate({_id: userId}, {$push: {transactions: transaction}});
+        const newTransaction = await userModel.findOneAndUpdate({_id: userId}, {$push: {transactions: transaction}})
+        const transactions = newTransaction.transactions;
+      const id =  transactions.map((transact)=>{
+        console.log(transact);
+        return transact.TimeStamp == transaction.TimeStamp})
+        console.log(`transaction id is ${id}`);
+        console.log(`transaction is ${newTransaction}`);
     }
     catch(err){
         console.log(`error while updating transaction ${err}`);

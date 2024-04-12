@@ -7,6 +7,7 @@ import SignUp from './components/singUp'
 import Send from './components/send'
 import Dashboard from './components/dashboard'
 import ErrorPage from './components/ErrorPage'
+import SuccessMsg from './components/SuccessMsg'
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Route path='/SignUp' element={<SignUp/>} />
       <Route path='/Send' element={<Send/>} />
       <Route path='/Dashboard' element={<Dashboard/>} />
+      <Route path='/AfterMsg' element={<SuccessMsg/>} />
       <Route path='*' element={<ErrorPage/>} />
     </Routes>
     </>
