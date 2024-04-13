@@ -1,7 +1,7 @@
 import Verified from "../assets/icons/verified_FILL1_wght400_GRAD200_opsz24.svg"
 import Receipt from "../assets/icons/receipt_long_FILL0_wght400_GRAD0_opsz24.svg"
 import { useSearchParams } from "react-router-dom"
-import Button from "../components/Button"
+import Button from "../miniComponents/Button"
 import { useNavigate } from "react-router-dom"
 import Dashboard from "./dashboard"
 

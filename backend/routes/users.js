@@ -112,6 +112,7 @@ userRouter.get('/getAll',auth,async (req,res)=>{
         res.json({Users:"0"});
     }
     else {
+        console.log(foundUsers)
         res.send(foundUsers);
     }
 
@@ -123,18 +124,17 @@ userRouter.get('/getAll',auth,async (req,res)=>{
 
 userRouter.post('/addContact',auth,async(req,res)=>{
     const {userid,username} = req.body;
-    const userId = req.userid;
+    const user_Id = req.userid;
     try {
         const addUser = await userModel.findOne({_id:userid});
-        const user = await  userModel.findOne({_id:userId});
         const newContact = {
             username: addUser.username,
             firstName: addUser.firstName,
             lastName: addUser.lastName
         }
 
-        console.log(`user before adding is ${user}`);
-        await addContact(req.userid, newContact);
+
+        await addContact(user_Id, newContact);
         res.send("contact added")
 
     }
@@ -148,7 +148,6 @@ userRouter.get('/me',auth,async(req,res)=>{
    try{
     const currentUser = await userModel.findOne({_id:req.userid});
     if(currentUser){
-    console.log(`me endpoint`);
     
     res.send(
        currentUser
@@ -161,5 +160,15 @@ else{
    catch(err){
     console.log(`internal server error ${err}`);
    }
+})
+
+userRouter.get('/transactions',auth,async(req,res)=>{
+    try{
+        const user = await userModel.findOne({_id:req.userid});
+        console.log(`user is ${user.transactions}`);
+        res.json({Transactions:`${JSON.stringify(user.transactions)}`})
+    }catch(err){
+        console.log(`error while fetching transactions ${err}`)
+    }
 })
 module.exports = userRouter;

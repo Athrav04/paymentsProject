@@ -1,19 +1,24 @@
 import { useSearchParams } from "react-router-dom";
 
 
-export default function Contacts({user,onClick}){
+export default function Contacts({user,onClick,toTransactions}){
 
     const alphabet = user.username.charAt(0).toUpperCase();
     const Username = user.username;
      return(
-        <div className="w-full flex justify-between ">
-            <div className="flex justify-center gap-1">
+        <div className="w-full flex justify-between shadow ">
+            <div className="flex justify-center gap-1 items-center ml-7">
             <div className="rounded-full bg-slate-300 h-14 w-14 flex justify-center mt-1 mr-2 ">
 					<p className="flex flex-col justify-center h-full text-lg m-0">{alphabet}</p>
 				</div>
-                <div className="mt-4">{Username}</div>
+                <div className=" text-lg font-bold">{Username}</div>
             </div>
-            <div className="mr-8">
+            <div className="mr-8 m-3 flex gap-2 mb-4 justify-center items-center">
+                <div className=" w-40">
+                    <button className=" mt-2 flex-wrap w-full bg-slate-800 flex justify-center items-center text-md text-white rounded-md h-full py-2" onClick={onClick}>
+                        Transactions
+                    </button>
+                </div>
                 <div className=" w-40">
                     <button className=" mt-2 flex-wrap w-full bg-slate-800 flex justify-center items-center text-md text-white rounded-md h-full py-2" onClick={onClick}>
                         Send Money

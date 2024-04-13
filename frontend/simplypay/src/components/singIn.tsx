@@ -4,7 +4,7 @@ import axios from "axios"
 
 import eyeOffOutline from "../assets/icons/eyeOffOutline.svg"
 import eyeOutline from "../assets/icons/eyeOutline.svg"
-import Button from "./Button"
+import Button from "../miniComponents/Button"
 
 
 export default function SingIn(){

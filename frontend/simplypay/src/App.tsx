@@ -6,8 +6,9 @@ import SingIn from './components/singIn'
 import SignUp from './components/singUp'
 import Send from './components/send'
 import Dashboard from './components/dashboard'
-import ErrorPage from './components/ErrorPage'
+import ErrorPage from './miniComponents/ErrorPage'
 import SuccessMsg from './components/SuccessMsg'
+import Transactions from './components/Transactions'
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
       <Route path='/Send' element={<Send/>} />
       <Route path='/Dashboard' element={<Dashboard/>} />
       <Route path='/AfterMsg' element={<SuccessMsg/>} />
+      <Route path='/Transactions' element={<Transactions/>} />
       <Route path='*' element={<ErrorPage/>} />
     </Routes>
     </>

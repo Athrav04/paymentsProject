@@ -1,5 +1,5 @@
-import UserCard from "./UserCard";
-import Contacts from "./Contacts";
+import UserCard from "../miniComponents/UserCard";
+import Contacts from "../miniComponents/Contacts";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect , useRef, useState} from "react";
@@ -62,7 +62,6 @@ export default function Dashboard(props){
 		}).then((res)=>{
 			setUsers(res.data);
 			if(res.data.Users == 0){
-
 				setUsers([]);
 			}
 		})
@@ -88,9 +87,9 @@ export default function Dashboard(props){
 			setFilter(e.target.value);
 		}}/>
 		</div>
-		<div className="w-full ml-7">
+		<div className="w-full">
 
-			{Users.length != 0 ? (Users.map((user)=><Contacts key={user._id} user={user} onClick={()=>{navigate(`/Send?name=${user.username}`)}}/>)):(
+			{Users.length != 0 ? (Users.map((user)=><Contacts key={user._id} user={user} toTransactions={()=>{navigate('/Transactions')}} onClick={()=>{navigate(`/Send?name=${user.username}`)}}/>)):(
 				<div className="flex justify-center items-center">
 					<p className="text-xl font-medium text-black">No Users found...</p>
 				</div>

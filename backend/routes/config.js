@@ -75,9 +75,11 @@ async function addTransaction(userId,transaction){
 
 async function addContact(userId,contact){
     try{
+        const userList = await userModel.findOne({contacts:[{username:contact.username}]});
+        console.log(`already have a account here ${userList}`)
         console.log('adding contact ');
         console.log(`userId is ${userId}`)
-        await userModel.findOneAndUpdate({_id:userId},{$push:{contacts:contact}}).select('-transactions');
+        await userModel.findOneAndUpdate({_id:userId},{$push:{contacts:contact}});
         console.log('contact added successfully');
     }catch(err){
         console.log(`Error occured ${err}`);
