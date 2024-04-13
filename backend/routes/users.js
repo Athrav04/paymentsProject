@@ -112,7 +112,7 @@ userRouter.get('/getAll',auth,async (req,res)=>{
         res.json({Users:"0"});
     }
     else {
-        console.log(foundUsers)
+     	console.log('found users form database');
         res.send(foundUsers);
     }
 
@@ -165,10 +165,13 @@ else{
 userRouter.get('/transactions',auth,async(req,res)=>{
     try{
         const user = await userModel.findOne({_id:req.userid});
-        console.log(`user is ${user.transactions}`);
-        res.json({Transactions:`${JSON.stringify(user.transactions)}`})
+	    console.log("-----------------------------");
+	    console.log(`${user.transactions}`);
+        res.send(user.transactions)
     }catch(err){
         console.log(`error while fetching transactions ${err}`)
     }
 })
+
+
 module.exports = userRouter;

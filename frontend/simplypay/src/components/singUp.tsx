@@ -85,10 +85,7 @@ export default function SignUp(){
 				setLoading(false);
 				if(response.data.token){
 					localStorage.setItem("token",response.data.token);
-					console.log(response.data.token)
 				}
-				console.log(JSON.stringify(response))
-				console.log(`Sign In response ${JSON.stringify(response.data)}`);
 				if(response.status == 200){
 					navigate('/Dashboard')
 				}

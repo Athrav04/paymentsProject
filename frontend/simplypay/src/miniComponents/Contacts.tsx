@@ -15,7 +15,7 @@ export default function Contacts({user,onClick,toTransactions}){
             </div>
             <div className="mr-8 m-3 flex gap-2 mb-4 justify-center items-center">
                 <div className=" w-40">
-                    <button className=" mt-2 flex-wrap w-full bg-slate-800 flex justify-center items-center text-md text-white rounded-md h-full py-2" onClick={onClick}>
+                    <button className=" mt-2 flex-wrap w-full bg-slate-800 flex justify-center items-center text-md text-white rounded-md h-full py-2" onClick={toTransactions}>
                         Transactions
                     </button>
                 </div>

@@ -66,6 +66,8 @@ export default function Dashboard(props){
 			}
 		})
 	},1000)
+
+	
 	useEffect(()=>{
 		fetchUser();
 	},[filter])

@@ -1,20 +1,31 @@
+import downArrow from "../assets/icons/south_west_FILL0_wght400_GRAD0_opsz24.svg";
+import sendArrow from  "../assets/icons/arrow_outward_FILL0_wght400_GRAD0_opsz24.svg"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import TransactionCard from "../miniComponents/TransactionsCrad";
 
 export default function Transactions(){
+	const [data,setData] = useState([]);
 	const navigate = useNavigate()
-	axios.get("http://localhost:3000/api/v1/user/transactions",{
+	
+	useEffect(()=>{
+		console.log(data);
+		axios.get("http://localhost:3000/api/v1/user/transactions",{
 		headers:{
 			Authorization : `Bearer ${localStorage.getItem('token')}`
 		}
 	}).then((response)=>{
-		const transactions = response.data.transactions;
-
-		console.log(`transactions data form BE is ${response.data.Transactions}`)
+		const data = response.data;
+		console.log(`transactions from BE are ${data}`);
+		console.log(`transactions data form BE is ${response.data}`);
+		 setData(data);
+		console.log(`transactions after state update is ${data}`);
 	}).catch((err)=>{
 		console.log(`error here ${err}`)
 		 navigate('/Dashboard')
 	})
+	},[])
 
 	const alphabet = 'U';
 	return(
@@ -28,8 +39,19 @@ export default function Transactions(){
 				</div>
 			</div>
 		</nav>
-		<p className="text-4xl font-bold ml-7">Transactions :</p>
+		<div>
+			{
+				data.length != 0 ? ( 
+					data.map((transaction,index)=><TransactionCard key={index} transaction={transaction} send={sendArrow} recieve={downArrow}/>)
+				):(
+					<div className="flex justify-center items-center min-h-full w-full">
+						<p className="text-xl font-bold">No Transactions</p>	
+					</div>
+				)
+			}
+		</div>
 		
+
 		</section>
 	)
 }
