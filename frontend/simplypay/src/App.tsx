@@ -1,14 +1,14 @@
 
 import './App.css'
 import {Routes,Route} from 'react-router-dom'
-import HomePage from './components/HomePage'
-import SingIn from './components/singIn'
-import SignUp from './components/singUp'
-import Send from './components/send'
-import Dashboard from './components/dashboard'
-import ErrorPage from './miniComponents/ErrorPage'
-import SuccessMsg from './components/SuccessMsg'
-import Transactions from './components/Transactions'
+import HomePage from './pages/HomePage'
+import SingIn from './pages/singIn'
+import SignUp from './pages/singUp'
+import Send from './pages/send'
+import Dashboard from './pages/dashboard'
+import ErrorPage from './components/ErrorPage'
+import SuccessMsg from './pages/SuccessMsg'
+import Transactions from './pages/Transactions'
 
 
 function App() {

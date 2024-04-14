@@ -1,7 +1,7 @@
 import Verified from "../assets/icons/verified_FILL1_wght400_GRAD200_opsz24.svg"
 import Receipt from "../assets/icons/receipt_long_FILL0_wght400_GRAD0_opsz24.svg"
 import { useSearchParams } from "react-router-dom"
-import Button from "../miniComponents/Button"
+import Button from "../components/Button"
 import { useNavigate } from "react-router-dom"
 import Dashboard from "./dashboard"
 
@@ -11,7 +11,7 @@ export default function SuccessMsg(){
     const amount = params.get('amount');
     const to = params.get('to');
     const note = params.get('note');
-    const time = params.get('time') || 10;
+    const time = params.get('time');
 
     return(
         <section className="flex justify-center items-center min-h-screen bg-gray-300">

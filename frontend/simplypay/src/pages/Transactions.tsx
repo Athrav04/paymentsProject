@@ -3,10 +3,11 @@ import sendArrow from  "../assets/icons/arrow_outward_FILL0_wght400_GRAD0_opsz24
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import TransactionCard from "../miniComponents/TransactionsCrad";
+import TransactionCard from "../components/TransactionsCrad";
 
 export default function Transactions(){
 	const [data,setData] = useState([]);
+	const [isLoading,setIsLoading] = useState(true);
 	const navigate = useNavigate()
 	
 	useEffect(()=>{
@@ -17,9 +18,8 @@ export default function Transactions(){
 		}
 	}).then((response)=>{
 		const data = response.data;
-		console.log(`transactions from BE are ${data}`);
-		console.log(`transactions data form BE is ${response.data}`);
 		 setData(data);
+		 setIsLoading(!isLoading)
 		console.log(`transactions after state update is ${data}`);
 	}).catch((err)=>{
 		console.log(`error here ${err}`)
@@ -39,8 +39,13 @@ export default function Transactions(){
 				</div>
 			</div>
 		</nav>
-		<div>
+		<div className="w-full">
 			{
+				isLoading?
+				<div className="w-full flex justify-center items-center mx-auto">
+					<p className="text-xl font-bold text-black">Loading...</p>
+				</div>
+				:
 				data.length != 0 ? ( 
 					data.map((transaction,index)=><TransactionCard key={index} transaction={transaction} send={sendArrow} recieve={downArrow}/>)
 				):(

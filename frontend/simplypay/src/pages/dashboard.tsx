@@ -1,5 +1,5 @@
-import UserCard from "../miniComponents/UserCard";
-import Contacts from "../miniComponents/Contacts";
+import UserCard from "../components/UserCard";
+import Contacts from "../components/Contacts";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect , useRef, useState} from "react";
@@ -7,6 +7,7 @@ import { useEffect , useRef, useState} from "react";
 
 export default function Dashboard(props){
 	const [Users,setUsers] = useState([]);
+	const [isLoading,setIsLoading] = useState(true);
 	const [filter , setFilter] = useState("");
 	const navigate = useNavigate();
 	const [userBalance,setUserBalance] = useState(0);
@@ -31,7 +32,7 @@ export default function Dashboard(props){
 					Authorization : `Bearer ${localStorage.getItem("token")}`
 				}
 			}).then((res)=>{
-				setUserBalance(res.data.Balance)
+				setUserBalance(res.data.Balance);
 			}).catch((e)=>{
 				console.log(`Some error while fetching balance ${e}`);
 			})
@@ -43,7 +44,9 @@ export default function Dashboard(props){
 		 })
 	},[])
 
-	let timeout = useRef();
+	let timeout = useRef();//To preserve the value of timeout across renders
+
+
 	function debounce(callBack,delay=1000){
 		 timeout;
 		return function (){
@@ -61,6 +64,7 @@ export default function Dashboard(props){
 			}
 		}).then((res)=>{
 			setUsers(res.data);
+			setIsLoading(!isLoading);
 			if(res.data.Users == 0){
 				setUsers([]);
 			}
@@ -91,12 +95,19 @@ export default function Dashboard(props){
 		</div>
 		<div className="w-full">
 
-			{Users.length != 0 ? (Users.map((user)=><Contacts key={user._id} user={user} toTransactions={()=>{navigate('/Transactions')}} onClick={()=>{navigate(`/Send?name=${user.username}`)}}/>)):(
-				<div className="flex justify-center items-center">
-					<p className="text-xl font-medium text-black">No Users found...</p>
-				</div>
-
-			)}
+			{
+				isLoading?(<div className="w-full flex justify-center items-center min-h-full">
+					<p className="text-xl font-bold text-black">Loading Users...</p>
+				</div>) : (
+					Users.length != 0 ? (Users.map((user)=><Contacts key={user._id} user={user} toTransactions={()=>{navigate('/Transactions')}} onClick={()=>{navigate(`/Send?name=${user.username}`)}}/>)):(
+						
+						<div className="flex justify-center items-center">
+							<p className="text-xl font-medium text-black">No Users found...</p>
+						</div>)
+				)
+				
+				
+			}
 		</div>
 		
 	</section>

@@ -167,7 +167,7 @@ userRouter.get('/transactions',auth,async(req,res)=>{
         const user = await userModel.findOne({_id:req.userid});
 	    console.log("-----------------------------");
 	    console.log(`${user.transactions}`);
-        res.send(user.transactions)
+        res.send(user.transactions);
     }catch(err){
         console.log(`error while fetching transactions ${err}`)
     }
