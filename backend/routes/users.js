@@ -109,10 +109,10 @@ userRouter.get('/getAll',auth,async (req,res)=>{
     }).select('-transactions -contacts')
     console.log(foundUsers.length);
     if(foundUsers.length == 0){
-        res.json({Users:"0"});
+        res.json({Users:0});
     }
     else {
-     	console.log('found users form database');
+     	console.log('found users form database'+foundUsers);
         res.send(foundUsers);
     }
 

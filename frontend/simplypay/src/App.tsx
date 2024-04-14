@@ -9,13 +9,16 @@ import Dashboard from './pages/dashboard'
 import ErrorPage from './components/ErrorPage'
 import SuccessMsg from './pages/SuccessMsg'
 import Transactions from './pages/Transactions'
+import { RecoilRoot } from 'recoil'
 
 
 function App() {
 
   return (
     <>
+    <RecoilRoot>
     <Routes>
+      
       <Route path='/' element={<HomePage/>} />
 	    <Route path='/SignIn' element={<SingIn/>} />
       <Route path='/SignUp' element={<SignUp/>} />
@@ -24,7 +27,9 @@ function App() {
       <Route path='/AfterMsg' element={<SuccessMsg/>} />
       <Route path='/Transactions' element={<Transactions/>} />
       <Route path='*' element={<ErrorPage/>} />
+      
     </Routes>
+    </RecoilRoot>
     </>
   )
 }

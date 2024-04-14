@@ -3,9 +3,13 @@ import Contacts from "../components/Contacts";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect , useRef, useState} from "react";
+import { useRecoilState } from "recoil";
+import { currentUser } from "../store/atoms/currentUser";
+import Button from "../components/Button";
 
 
 export default function Dashboard(props){
+	const [user1,setUser] = useRecoilState(currentUser);
 	const [Users,setUsers] = useState([]);
 	const [isLoading,setIsLoading] = useState(true);
 	const [filter , setFilter] = useState("");
@@ -22,6 +26,10 @@ export default function Dashboard(props){
 		 }
 		 ).then((response)=>{
 			const user = response.data;
+			console.log(user.username);
+			
+			setUser(user.username);
+			console.log(`current user updated value is ${user1}`)
 			if(user.length == 0){
 				navigate('/SignIn');
 			}
@@ -56,6 +64,7 @@ export default function Dashboard(props){
 			},delay);
 		}
 	}
+	
 
 	const fetchUser = debounce( ()=>{
 		 axios.get("http://localhost:3000/api/v1/user/getAll?filter="+filter,{
@@ -64,7 +73,7 @@ export default function Dashboard(props){
 			}
 		}).then((res)=>{
 			setUsers(res.data);
-			setIsLoading(!isLoading);
+			setIsLoading(false);
 			if(res.data.Users == 0){
 				setUsers([]);
 			}
@@ -74,6 +83,7 @@ export default function Dashboard(props){
 	
 	useEffect(()=>{
 		fetchUser();
+		console.log(`inside useEffect use1 is ${user1}`)
 	},[filter])
 
 	return (
@@ -88,8 +98,12 @@ export default function Dashboard(props){
 			</div>
 		</nav>
 		<p className="ml-7 mt-2 text-2xl font-bold text-black w-full">Your Balance ,  ₹{userBalance}</p>
+		<div className="w-40 ml-7">
+		<Button text={'Transactions'} onClick={()=>navigate('/transactions')} isDisabled={false}/>
+		</div>
 		<div className="min-w-full"> 
 		<UserCard onChange={(e)=>{
+			console.log(`filter changed ${e.target.value}`)
 			setFilter(e.target.value);
 		}}/>
 		</div>
@@ -99,7 +113,7 @@ export default function Dashboard(props){
 				isLoading?(<div className="w-full flex justify-center items-center min-h-full">
 					<p className="text-xl font-bold text-black">Loading Users...</p>
 				</div>) : (
-					Users.length != 0 ? (Users.map((user)=><Contacts key={user._id} user={user} toTransactions={()=>{navigate('/Transactions')}} onClick={()=>{navigate(`/Send?name=${user.username}`)}}/>)):(
+					Users.length != 0 ? (Users.map((user)=><Contacts key={user._id} user={user} onClick={()=>{navigate(`/Send?name=${user.username}`)}}/>)):(
 						
 						<div className="flex justify-center items-center">
 							<p className="text-xl font-medium text-black">No Users found...</p>

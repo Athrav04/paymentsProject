@@ -20,7 +20,7 @@ export default function Transactions(){
 		const data = response.data;
 		 setData(data);
 		 setIsLoading(!isLoading)
-		console.log(`transactions after state update is ${data}`);
+		console.log(`transactions after state update is ${JSON.stringify(data)}`);
 	}).catch((err)=>{
 		console.log(`error here ${err}`)
 		 navigate('/Dashboard')
