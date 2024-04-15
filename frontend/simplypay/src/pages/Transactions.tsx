@@ -4,8 +4,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import TransactionCard from "../components/TransactionsCrad";
+import { useRecoilValue } from "recoil";
+import { currentUser } from "../store/atoms/currentUser";
 
 export default function Transactions(){
+	const curretUser = useRecoilValue(currentUser);
 	const [data,setData] = useState([]);
 	const [isLoading,setIsLoading] = useState(true);
 	const navigate = useNavigate()
@@ -27,7 +30,8 @@ export default function Transactions(){
 	})
 	},[])
 
-	const alphabet = 'U';
+	console.log(currentUser.toJSON)
+	console.log(currentUser)
 	return(
 		<section className="flex flex-col flex-wrap justify-center items-start gap-5">
 			<nav className="flex justify-between w-full shadow-md px-7 py-7">
@@ -35,10 +39,11 @@ export default function Transactions(){
 			<div className="flex ">
 				<p className="text-xl text-black font-medium h-full  mr-1">Hello, </p>
 				<div className="rounded-full bg-slate-500 h-12 w-12 flex justify-center mr-2 ">
-					<p className="flex flex-col justify-center h-full text-lg m-0">{alphabet}</p>
+					<p className="flex flex-col justify-center h-full text-lg m-0">{'U'}</p>
 				</div>
 			</div>
 		</nav>
+		<h1 className="font-bold text-4xl">Transactions :</h1>
 		<div className="w-full">
 			{
 				isLoading?

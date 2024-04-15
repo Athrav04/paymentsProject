@@ -97,7 +97,7 @@ export default function Dashboard(props){
 				</div>
 			</div>
 		</nav>
-		<p className="ml-7 mt-2 text-2xl font-bold text-black w-full">Your Balance ,  ₹{userBalance}</p>
+		<p className="ml-7 mt-2 text-2xl font-bold text-black w-full">Your Balance ,  ${userBalance}</p>
 		<div className="w-40 ml-7">
 		<Button text={'Transactions'} onClick={()=>navigate('/transactions')} isDisabled={false}/>
 		</div>
@@ -119,7 +119,6 @@ export default function Dashboard(props){
 							<p className="text-xl font-medium text-black">No Users found...</p>
 						</div>)
 				)
-				
 				
 			}
 		</div>
