@@ -15,6 +15,7 @@ async function authMiddleware(req,res,next) {
         const token = headerArray[1];
     
         const decoded = await jwt.verify(token,secret);
+	
         if(decoded.userid){
             req.userid = decoded.userid;
             next();

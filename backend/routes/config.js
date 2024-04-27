@@ -29,6 +29,7 @@ const account = await new accountModel({
     userid:userid,
     balance:balance
 })
+newUser.account = account._id;
 await newUser.save()
 await account.save()
 return newUser
@@ -48,7 +49,7 @@ async function updateUser(body,userid){
 }
 
 async function generateToken(tokenBody){
-    const token = jwt.sign(tokenBody,secret);
+    const token = jwt.sign(tokenBody,secret,{expiresIn:'7d'});
     return token
 }
 

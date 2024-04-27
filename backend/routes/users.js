@@ -146,7 +146,8 @@ userRouter.post('/addContact',auth,async(req,res)=>{
 
 userRouter.get('/me',auth,async(req,res)=>{
    try{
-    const currentUser = await userModel.findOne({_id:req.userid});
+    const currentUser = await userModel.findOne({_id:req.userid}).populate('account');
+    console.log(`user found is ${currentUser}`);
     if(currentUser){
     
     res.send(
@@ -154,7 +155,7 @@ userRouter.get('/me',auth,async(req,res)=>{
     )
 }
 else{
-    res.send("user does not exist")
+    res.status(404).send("user does not exist")
 }
    }
    catch(err){

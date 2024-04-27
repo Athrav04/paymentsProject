@@ -40,7 +40,7 @@ export default function SuccessMsg(){
 			        </div>
                     <p className="mt-5 ml-2">{to}</p>
                 </div>
-                <p className="text-xl mr-2 mt-5">₹{amount}</p>
+                <p className="text-xl mr-2 mt-5">${amount}</p>
                 </div>
                 
                 </div>

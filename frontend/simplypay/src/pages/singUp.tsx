@@ -1,22 +1,25 @@
 import { Link , useNavigate} from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import eyeOffOutline from "../assets/icons/eyeOffOutline.svg"
 import eyeOutline from "../assets/icons/eyeOutline.svg"
 import axios from "axios"
 import Button from "../components/Button"
-
+import { useRecoilValueLoadable_TRANSITION_SUPPORT_UNSTABLE } from "recoil"
+import { currentUserSelector } from "../store/atoms/currentUser"
 
 export default function SignUp(){
 	const navigate = useNavigate();
+	const isLoggedIn= useRecoilValueLoadable_TRANSITION_SUPPORT_UNSTABLE(currentUserSelector);
+		
+		useEffect(()=>{
+			
+			if(isLoggedIn.contents){
+				console.log(`redirecting you to dashboard cause you are already logged in`);
+				navigate('/Dashboard');
+			}
+		},[])
 
-	axios.get("http://localhost:3000/api/v1/user/me",{
-		headers:{
-			Authorization :`Bearer ${localStorage.getItem('token')}`
-		}
-	}).then(()=>{
-		navigate('/Dashboard')
-	})
-
+		
 	const [loading,setLoading] = useState(false);
 	const [show,setShow] = useState(false);
 	const [firstName,setfirstName] = useState("");
@@ -67,13 +70,6 @@ export default function SignUp(){
 			
 		</form>
 		<Button onClick={async()=>{
-			console.log({
-				username,
-				firstName,
-				lastName,
-				email,
-				password
-			})
 				setLoading(true);
 				const response = await axios.post("http://localhost:3000/api/v1/user/signUp",{
 					username,

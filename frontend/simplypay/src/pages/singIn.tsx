@@ -5,29 +5,21 @@ import axios from "axios"
 import eyeOffOutline from "../assets/icons/eyeOffOutline.svg"
 import eyeOutline from "../assets/icons/eyeOutline.svg"
 import Button from "../components/Button"
+import { useRecoilValueLoadable } from "recoil"
+import { currentUserSelector } from "../store/atoms/currentUser"
 
 
 export default function SingIn(){
 	const navigate = useNavigate();
-	const [isLoggedIn,setIsLoggedIn] = useState(false);
-
-
+	const isLoggedIn= useRecoilValueLoadable(currentUserSelector);
+	
 	useEffect(()=>{
-		axios.get("http://localhost:3000/api/v1/user/me",{
-		headers:{
-			Authorization :`Bearer ${localStorage.getItem('token')}`
+		
+		if(isLoggedIn.contents){
+			console.log(`redirecting you to dashboard cause you are already logged in`);
+			navigate('/Dashboard');
 		}
-	}).then(()=>{
-		setIsLoggedIn(true);
-	}).catch((err)=>{
-		setIsLoggedIn(false);
-	})
-
-	},[]);
-
-	if(isLoggedIn){
-		navigate('/Dashboard')
-	}
+	},[])
 	
 	const [loading,setLoading] = useState(false);
 	const [show,setShow] = useState(false);
@@ -47,12 +39,12 @@ export default function SingIn(){
 				<p className=" text-black text-lg m-0">username</p>
 				<input className=" focus:border-black focus:outline-none border-solid border-2 rounded-md w-full h-9 px-2" placeholder="John1234" onChange={(e)=>{
 					setUsername(e.target.value);
-					console.log(username);
+
 				}}></input>
 				<p className="  text-black text-lg m-0">Email</p>
 				<input className=" focus:border-black focus:outline-none border-solid border-2 rounded-md w-full h-9 px-2" placeholder="John@gmail.com" onChange={(e)=>{
 					setemail(e.target.value);
-					console.log(email);
+
 				}}></input>
 				<p className=" text-black text-lg m-0">Password</p>
 				<div className="w-full relative flex jusitfy-center items-center">
@@ -80,12 +72,11 @@ export default function SingIn(){
 				setLoading(false);
 				if(response.data.token){
 				localStorage.setItem("token",response.data.token);
-				console.log(localStorage.getItem("token"));
+
 				}
 				else{
 					console.log('error occured');
 				}
-				console.log(`Sign In response ${response}`);
 				if(response.status == 200){
 					navigate('/Dashboard');
 				}

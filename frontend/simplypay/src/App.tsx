@@ -10,6 +10,7 @@ import ErrorPage from './components/ErrorPage'
 import SuccessMsg from './pages/SuccessMsg'
 import Transactions from './pages/Transactions'
 import { RecoilRoot } from 'recoil'
+import { Suspense } from 'react'
 
 
 function App() {
@@ -17,8 +18,9 @@ function App() {
   return (
     <>
     <RecoilRoot>
+    <Suspense fallback={<div className='flex justify-center items-center min-h-full shadow-xl '>Loading...</div>}>
     <Routes>
-      
+
       <Route path='/' element={<HomePage/>} />
 	    <Route path='/SignIn' element={<SingIn/>} />
       <Route path='/SignUp' element={<SignUp/>} />
@@ -27,8 +29,9 @@ function App() {
       <Route path='/AfterMsg' element={<SuccessMsg/>} />
       <Route path='/Transactions' element={<Transactions/>} />
       <Route path='*' element={<ErrorPage/>} />
-      
+
     </Routes>
+    </Suspense>
     </RecoilRoot>
     </>
   )

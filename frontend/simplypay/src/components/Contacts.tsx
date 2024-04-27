@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 
 
-export default function Contacts({user,onClick,toTransactions}){
+export default function Contacts({user,onClick}){
 
     const alphabet = user.username.charAt(0).toUpperCase();
     const Username = user.username;

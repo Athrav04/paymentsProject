@@ -1,14 +1,12 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import { currentUser } from "../store/atoms/currentUser";
 
-export default function TransactionCard({transaction,send,recieve}){
-    const [user,setUser] = useRecoilState(currentUser);
-    console.log(`transaction from ${transaction.from}`)
-    console.log(`user is ${user}`);
+
+export default function TransactionCard({transaction,send,recieve,currentUsername}){
+    const currentUser = currentUsername;
     const Username = transaction.to;
     const alphabet = transaction.to.charAt(0).toUpperCase();
     const amount:number = transaction.amount;
     const note:string = transaction.note;
+
 
     return(
         <div className="flex justify-between shadow rounded-lg m-10 mr-20 ">
@@ -20,15 +18,15 @@ export default function TransactionCard({transaction,send,recieve}){
                 <div className=" text-lg font-bold mx-auto">{Username}</div>
             </div>
             <div className="flex justify-end items-end ml-10 w-full">
-                <p className="font-medium text-slate-700 ">Amount :${amount}</p>
+                <p className="font-medium text-slate-700 ">Amount : ${amount}</p>
             </div>
             <div className="flex justify-end items-end ml-10 w-full">
-                <p className="font-medium text-slate-700 ">Note :{note}</p>
+                <p className="font-medium text-slate-700 ">Note : {note}</p>
             </div>  
             </div>
             <div>
                {
-                    transaction.from == user ? (
+                    transaction.from == currentUser ? (
                         <div className="flex justify-start items-start m-5">
                             <img
                         src={send}

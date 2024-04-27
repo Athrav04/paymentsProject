@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
     lastName:String,
     email:String,
     password:String,
+    account:{
+             type:mongoose.Schema.Types.ObjectId,
+             ref:'accountModel'
+	},
     transactions:[transactions],
     contacts:[contacts]
 })

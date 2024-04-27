@@ -4,17 +4,18 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import TransactionCard from "../components/TransactionsCrad";
-import { useRecoilValue } from "recoil";
-import { currentUser } from "../store/atoms/currentUser";
+import { useRecoilValueLoadable , useRecoilValue } from "recoil";
+import { currentUserSelector, userImage } from "../store/atoms/currentUser";
+
 
 export default function Transactions(){
-	const curretUser = useRecoilValue(currentUser);
+	const currentUser = useRecoilValueLoadable(currentUserSelector);
+	const userImg = useRecoilValue(userImage);
 	const [data,setData] = useState([]);
 	const [isLoading,setIsLoading] = useState(true);
 	const navigate = useNavigate()
 	
 	useEffect(()=>{
-		console.log(data);
 		axios.get("http://localhost:3000/api/v1/user/transactions",{
 		headers:{
 			Authorization : `Bearer ${localStorage.getItem('token')}`
@@ -22,16 +23,14 @@ export default function Transactions(){
 	}).then((response)=>{
 		const data = response.data;
 		 setData(data);
-		 setIsLoading(!isLoading)
-		console.log(`transactions after state update is ${JSON.stringify(data)}`);
+		 setIsLoading(false);
+
 	}).catch((err)=>{
-		console.log(`error here ${err}`)
+		console.log(`error in transactions page  ${err}`)
 		 navigate('/Dashboard')
 	})
 	},[])
 
-	console.log(currentUser.toJSON)
-	console.log(currentUser)
 	return(
 		<section className="flex flex-col flex-wrap justify-center items-start gap-5">
 			<nav className="flex justify-between w-full shadow-md px-7 py-7">
@@ -39,7 +38,7 @@ export default function Transactions(){
 			<div className="flex ">
 				<p className="text-xl text-black font-medium h-full  mr-1">Hello, </p>
 				<div className="rounded-full bg-slate-500 h-12 w-12 flex justify-center mr-2 ">
-					<p className="flex flex-col justify-center h-full text-lg m-0">{'U'}</p>
+					<p className="flex flex-col justify-center h-full text-lg m-0">{userImg}</p>
 				</div>
 			</div>
 		</nav>
@@ -52,7 +51,7 @@ export default function Transactions(){
 				</div>
 				:
 				data.length != 0 ? ( 
-					data.map((transaction,index)=><TransactionCard key={index} transaction={transaction} send={sendArrow} recieve={downArrow}/>)
+					data.map((transaction,index)=><TransactionCard key={index} transaction={transaction} send={sendArrow} recieve={downArrow} currentUsername={currentUser.contents.username}/>)
 				):(
 					<div className="flex justify-center items-center min-h-full w-full">
 						<p className="text-xl font-bold">No Transactions</p>	
